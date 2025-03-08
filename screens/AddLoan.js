@@ -6,12 +6,16 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { useTheme } from '../context/ThemeProvider';
+import { useLoans } from '../context/LoanProvider'; // ✅ Import Loan Context
 import Header from '../components/Header';
 
 const AddLoan = ({ navigation }) => {
   const { colors } = useTheme();
+  const { addLoan } = useLoans(); // ✅ Access addLoan function
+
   const [loanName, setLoanName] = useState('');
   const [loanAmount, setLoanAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
@@ -19,8 +23,22 @@ const AddLoan = ({ navigation }) => {
   const [duration, setDuration] = useState('');
 
   const handleSubmit = () => {
-    // Logic to save loan (for now, just navigate back)
-    navigation.goBack();
+    if (!loanName || !loanAmount || !interestRate || !emi || !duration) {
+      Alert.alert('Error', 'Please fill in all fields.');
+      return;
+    }
+
+    const newLoan = {
+      name: loanName,
+      amount: parseFloat(loanAmount),
+      interest: parseFloat(interestRate),
+      emi: parseFloat(emi),
+      duration: parseInt(duration),
+    };
+
+    addLoan(newLoan); // ✅ Save Loan to Context + AsyncStorage
+    Alert.alert('Success', 'Loan added successfully!');
+    navigation.goBack(); // ✅ Navigate back to dashboard
   };
 
   return (

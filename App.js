@@ -8,7 +8,6 @@ export default function App() {
   return (
     <ThemeProvider>
       <LoanProvider>
-        {' '}
         {/* ✅ Wrap with LoanProvider */}
         <SafeAreaView
           style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}

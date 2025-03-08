@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoanContext = createContext();
@@ -6,10 +7,28 @@ const LoanContext = createContext();
 export const LoanProvider = ({ children }) => {
   const [loans, setLoans] = useState([]);
 
+  // Select appropriate storage: AsyncStorage for mobile, localStorage for web
+  const Storage = {
+    getItem: async key => {
+      if (Platform.OS === 'web') {
+        return Promise.resolve(localStorage.getItem(key));
+      }
+      return AsyncStorage.getItem(key);
+    },
+    setItem: async (key, value) => {
+      if (Platform.OS === 'web') {
+        localStorage.setItem(key, value);
+        return Promise.resolve();
+      }
+      return AsyncStorage.setItem(key, value);
+    },
+  };
+
+  // Load Loans from Storage when the app starts
   useEffect(() => {
     const loadLoans = async () => {
       try {
-        const storedLoans = await AsyncStorage.getItem('loans');
+        const storedLoans = await Storage.getItem('loans');
         if (storedLoans) {
           setLoans(JSON.parse(storedLoans));
         }
@@ -21,10 +40,11 @@ export const LoanProvider = ({ children }) => {
     loadLoans();
   }, []);
 
+  // Save Loans to Storage whenever the loans change
   useEffect(() => {
     const saveLoans = async () => {
       try {
-        await AsyncStorage.setItem('loans', JSON.stringify(loans));
+        await Storage.setItem('loans', JSON.stringify(loans));
       } catch (error) {
         console.error('Failed to save loans:', error);
       }
@@ -35,6 +55,7 @@ export const LoanProvider = ({ children }) => {
     }
   }, [loans]);
 
+  // Function to Add Loan
   const addLoan = newLoan => {
     const updatedLoans = [
       ...loans,
