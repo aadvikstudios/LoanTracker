@@ -8,7 +8,10 @@ const SignupScreen = ({ navigation }) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.title, { color: colors.text }]}>Signup Screen</Text>
-      <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
+      <Button
+        title="Go to Login"
+        onPress={() => navigation.navigate('Login')}
+      />
     </View>
   );
 };

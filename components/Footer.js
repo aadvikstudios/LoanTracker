@@ -7,7 +7,9 @@ const Footer = () => {
 
   return (
     <View style={[styles.footer, { backgroundColor: colors.surface }]}>
-      <Text style={[styles.footerText, { color: colors.text }]}>© 2025 Loan Tracker</Text>
+      <Text style={[styles.footerText, { color: colors.text }]}>
+        © 2025 Loan Tracker
+      </Text>
     </View>
   );
 };

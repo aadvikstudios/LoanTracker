@@ -16,8 +16,15 @@ const Header = () => {
       <Text style={[styles.appName, { color: colors.text }]}>Loan Tracker</Text>
 
       {/* Theme Toggle Button (Right) */}
-      <TouchableOpacity onPress={() => setIsDarkMode(!isDarkMode)} style={styles.iconContainer}>
-        <MaterialIcons name={isDarkMode ? 'dark-mode' : 'light-mode'} size={24} color={colors.text} />
+      <TouchableOpacity
+        onPress={() => setIsDarkMode(!isDarkMode)}
+        style={styles.iconContainer}
+      >
+        <MaterialIcons
+          name={isDarkMode ? 'dark-mode' : 'light-mode'}
+          size={24}
+          color={colors.text}
+        />
       </TouchableOpacity>
     </View>
   );

@@ -1,0 +1,15 @@
+[
+  { "id": "1", "icon": "add", "text": "Add Loan", "screen": "AddLoan" },
+  {
+    "id": "2",
+    "icon": "analytics",
+    "text": "Loan Insights",
+    "screen": "LoanInsights"
+  },
+  {
+    "id": "3",
+    "icon": "payments",
+    "text": "EMI Calculator",
+    "screen": "EMICalculator"
+  }
+]

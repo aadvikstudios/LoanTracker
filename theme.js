@@ -6,7 +6,7 @@ export const lightTheme = {
     ...MD3LightTheme.colors,
 
     // 🎨 Primary Colors
-    primary: '#6200ea',   // Purple
+    primary: '#6200ea', // Purple
     primaryLight: '#9c47ff', // Light Purple
     primaryDark: '#3700b3', // Dark Purple
 

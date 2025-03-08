@@ -8,8 +8,14 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.title, { color: colors.text }]}>Login Screen</Text>
-      <Button title="Go to Signup" onPress={() => navigation.navigate('Signup')} />
-      <Button title="Go to Dashboard" onPress={() => navigation.navigate('Dashboard')} />
+      <Button
+        title="Go to Signup"
+        onPress={() => navigation.navigate('Signup')}
+      />
+      <Button
+        title="Go to Dashboard"
+        onPress={() => navigation.navigate('Dashboard')}
+      />
     </View>
   );
 };
