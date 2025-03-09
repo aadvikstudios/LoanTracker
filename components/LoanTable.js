@@ -28,18 +28,23 @@ const LoanTable = ({ navigation }) => {
           ]}
         >
           <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
-            Loan
+            Name
           </Text>
           <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
-            Amount
+            Balance
           </Text>
           <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
-            Interest
+            Rate
+          </Text>
+          <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
+            Min Pmt
+          </Text>
+          <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
+            Due Date
           </Text>
           <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
             Actions
           </Text>
-          {/* ✅ Added Action Column */}
         </View>
       )}
       renderItem={({ item }) => (
@@ -48,15 +53,21 @@ const LoanTable = ({ navigation }) => {
             {item.name}
           </Text>
           <Text style={[styles.tableCell, { color: colors.text }]}>
-            ${item.amount}
+            ${item.balance.toLocaleString()}
           </Text>
           <Text style={[styles.tableCell, { color: colors.text }]}>
-            {item.interest}%
+            {item.interestRate.toFixed(2)}%
+          </Text>
+          <Text style={[styles.tableCell, { color: colors.text }]}>
+            ${item.emi.toLocaleString()}
+          </Text>
+          <Text style={[styles.tableCell, { color: colors.text }]}>
+            {item.dueDate}
           </Text>
 
           {/* Actions Column */}
           <View style={styles.actionContainer}>
-            {/* Edit Button (Future Implementation) */}
+            {/* Edit Button */}
             <TouchableOpacity
               onPress={() => navigation.navigate('EditLoan', { loan: item })}
             >

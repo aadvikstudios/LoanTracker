@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { v4 as uuidv4 } from 'uuid'; // Import UUID generator
 
 const LoanContext = createContext();
 
@@ -56,19 +55,35 @@ export const LoanProvider = ({ children }) => {
     }
   }, [loans]);
 
+  // Function to Generate a Unique ID (Timestamp-based)
+  const generateUniqueId = () => {
+    return `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+  };
+
   // Function to Add Loan
   const addLoan = newLoan => {
-    const updatedLoans = [...loans, { id: uuidv4(), ...newLoan }];
+    const updatedLoans = [...loans, { id: generateUniqueId(), ...newLoan }];
     setLoans(updatedLoans);
   };
-  // ✅ Function to Remove Loan
+
+  // Function to Remove Loan
   const removeLoan = id => {
     const updatedLoans = loans.filter(loan => loan.id !== id);
     setLoans(updatedLoans);
   };
 
+  // Function to Clear All Loans
+  const clearLoans = async () => {
+    try {
+      await Storage.setItem('loans', JSON.stringify([])); // Clear persistent storage
+      setLoans([]); // Clear state
+    } catch (error) {
+      console.error('Failed to clear loans:', error);
+    }
+  };
+
   return (
-    <LoanContext.Provider value={{ loans, addLoan, removeLoan }}>
+    <LoanContext.Provider value={{ loans, addLoan, removeLoan, clearLoans }}>
       {children}
     </LoanContext.Provider>
   );

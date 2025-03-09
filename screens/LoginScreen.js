@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeProvider';
+import { useLoans } from '../context/LoanProvider'; // ✅ Import Loan Context
 
 const LoginScreen = ({ navigation }) => {
   const { colors } = useTheme(); // ✅ Apply theme colors
-
+  const { loans, clearLoans } = useLoans(); // ✅ Get removeLoan function from LoanProvider
+  console.log('loans', loans);
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.title, { color: colors.text }]}>Login Screen</Text>
@@ -16,6 +18,14 @@ const LoginScreen = ({ navigation }) => {
       >
         <Text style={[styles.buttonText, { color: colors.textAccent }]}>
           Go to Signup
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: 'red', marginTop: 10 }]}
+        onPress={clearLoans}
+      >
+        <Text style={[styles.buttonText, { color: 'white' }]}>
+          Clear All Loans
         </Text>
       </TouchableOpacity>
 
