@@ -81,9 +81,16 @@ export const LoanProvider = ({ children }) => {
       console.error('Failed to clear loans:', error);
     }
   };
+  const updateLoan = updatedLoan => {
+    setLoans(prevLoans =>
+      prevLoans.map(loan => (loan.id === updatedLoan.id ? updatedLoan : loan))
+    );
+  };
 
   return (
-    <LoanContext.Provider value={{ loans, addLoan, removeLoan, clearLoans }}>
+    <LoanContext.Provider
+      value={{ loans, addLoan, removeLoan, clearLoans, updateLoan }}
+    >
       {children}
     </LoanContext.Provider>
   );
