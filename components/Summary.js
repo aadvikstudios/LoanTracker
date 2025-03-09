@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../../context/ThemeProvider';
+import { useTheme } from '../context/ThemeProvider';
+import { useLoans } from '../context/LoanProvider'; // ✅ Import Loan Context
 
-const Summary = ({ loans }) => {
+const Summary = () => {
   const { colors } = useTheme();
+  const { loans } = useLoans();
 
-  // Calculate total loan amount
   const totalLoanAmount = loans.reduce((sum, loan) => sum + loan.amount, 0);
   const avgInterestRate =
     loans.length > 0
@@ -16,14 +17,12 @@ const Summary = ({ loans }) => {
 
   return (
     <>
-      {/* Total Loan Amount */}
       <View style={styles.summaryContainer}>
         <Text style={[styles.summaryText, { color: colors.text }]}>
           Total Loan Amount: ${totalLoanAmount.toFixed(2)}
         </Text>
       </View>
 
-      {/* Smaller Summary Boxes */}
       <View style={styles.boxContainer}>
         <View style={[styles.box, { backgroundColor: colors.surface }]}>
           <Text style={[styles.boxTitle, { color: colors.text }]}>

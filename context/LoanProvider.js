@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { v4 as uuidv4 } from 'uuid'; // Import UUID generator
 
 const LoanContext = createContext();
 
@@ -57,15 +58,17 @@ export const LoanProvider = ({ children }) => {
 
   // Function to Add Loan
   const addLoan = newLoan => {
-    const updatedLoans = [
-      ...loans,
-      { id: (loans.length + 1).toString(), ...newLoan },
-    ];
+    const updatedLoans = [...loans, { id: uuidv4(), ...newLoan }];
+    setLoans(updatedLoans);
+  };
+  // ✅ Function to Remove Loan
+  const removeLoan = id => {
+    const updatedLoans = loans.filter(loan => loan.id !== id);
     setLoans(updatedLoans);
   };
 
   return (
-    <LoanContext.Provider value={{ loans, addLoan }}>
+    <LoanContext.Provider value={{ loans, addLoan, removeLoan }}>
       {children}
     </LoanContext.Provider>
   );

@@ -12,7 +12,7 @@ const ActionCardsGrid = ({ navigation }) => {
       <FlatList
         data={actions}
         keyExtractor={item => item.id}
-        numColumns={3} // Display in grid format
+        numColumns={3}
         renderItem={({ item }) => (
           <ActionCard
             icon={item.icon}

@@ -1,9 +1,18 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { useTheme } from '../../context/ThemeProvider';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { useTheme } from '../context/ThemeProvider';
+import { useLoans } from '../context/LoanProvider'; // ✅ Import Loan Context
+import { MaterialIcons } from '@expo/vector-icons'; // ✅ Import Icons
 
-const LoanTable = ({ loans }) => {
+const LoanTable = ({ navigation }) => {
   const { colors } = useTheme();
+  const { loans, removeLoan } = useLoans(); // ✅ Get removeLoan function from LoanProvider
 
   return (
     <FlatList
@@ -27,6 +36,10 @@ const LoanTable = ({ loans }) => {
           <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
             Interest
           </Text>
+          <Text style={[styles.tableHeaderText, { color: colors.textAccent }]}>
+            Actions
+          </Text>
+          {/* ✅ Added Action Column */}
         </View>
       )}
       renderItem={({ item }) => (
@@ -40,6 +53,31 @@ const LoanTable = ({ loans }) => {
           <Text style={[styles.tableCell, { color: colors.text }]}>
             {item.interest}%
           </Text>
+
+          {/* Actions Column */}
+          <View style={styles.actionContainer}>
+            {/* Edit Button (Future Implementation) */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditLoan', { loan: item })}
+            >
+              <MaterialIcons
+                name="edit"
+                size={22}
+                color={colors.primary}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+
+            {/* Delete Button */}
+            <TouchableOpacity onPress={() => removeLoan(item.id)}>
+              <MaterialIcons
+                name="delete"
+                size={22}
+                color="red"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     />
@@ -53,6 +91,7 @@ const styles = StyleSheet.create({
   tableRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -69,6 +108,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flex: 1,
     textAlign: 'center',
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    marginHorizontal: 5,
   },
 });
 

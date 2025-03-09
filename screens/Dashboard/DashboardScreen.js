@@ -1,32 +1,28 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '../../context/ThemeProvider';
-import { useLoans } from '../../context/LoanProvider'; // ✅ Import Loan Context
+import { useLoans } from '../../context/LoanProvider';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ActionCardsGrid from './ActionCardsGrid';
-import Summary from './Summary';
-import LoanTable from './LoanTable';
+import Summary from '../../components/Summary';
+import LoanTable from '../../components/LoanTable';
 
 const DashboardScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const { loans } = useLoans(); // ✅ Get loans from LoanProvider
   console.log('loans', loans);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header */}
-      <Header />
+      <Header title="Loan Tracker" showBackButton={false} />
 
-      {/* Action Cards Grid */}
       <ActionCardsGrid navigation={navigation} />
 
-      {/* Summary Section */}
-      <Summary loans={loans} />
+      <Summary />
 
-      {/* Loan Table */}
-      <LoanTable loans={loans} />
+      <LoanTable />
 
-      {/* Footer */}
       <Footer />
     </View>
   );

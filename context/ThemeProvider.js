@@ -14,7 +14,7 @@ import { ActivityIndicator } from 'react-native';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Load fonts
   const [fontsLoaded] = useFonts({

@@ -9,138 +9,200 @@ import {
   Alert,
 } from 'react-native';
 import { useTheme } from '../context/ThemeProvider';
-import { useLoans } from '../context/LoanProvider'; // ✅ Import Loan Context
+import { useLoans } from '../context/LoanProvider';
 import Header from '../components/Header';
+import LoanTable from '../components/LoanTable';
+import { Picker } from '@react-native-picker/picker'; // Updated Picker import for better support
+import { v4 as uuidv4 } from 'uuid'; // Ensure unique loan IDs
 
 const AddLoan = ({ navigation }) => {
-  const { colors } = useTheme();
-  const { addLoan } = useLoans(); // ✅ Access addLoan function
+  const { colors } = useTheme(); // Use theme colors
+  const { addLoan } = useLoans();
 
+  // State for form inputs
   const [loanName, setLoanName] = useState('');
   const [loanAmount, setLoanAmount] = useState('');
+  const [remainingBalance, setRemainingBalance] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [emi, setEmi] = useState('');
   const [duration, setDuration] = useState('');
+  const [category, setCategory] = useState(''); // New category state
+
+  // List of loan categories
+  const categories = [
+    'Credit Card',
+    'Personal Loan',
+    'Auto Loan',
+    'Home Loan',
+    'Student Loan',
+  ];
 
   const handleSubmit = () => {
-    if (!loanName || !loanAmount || !interestRate || !emi || !duration) {
+    if (
+      !loanName ||
+      !loanAmount ||
+      !remainingBalance ||
+      !interestRate ||
+      !emi ||
+      !duration ||
+      !category
+    ) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
 
+    if (parseFloat(remainingBalance) > parseFloat(loanAmount)) {
+      Alert.alert(
+        'Error',
+        'Remaining balance cannot be more than the loan amount.'
+      );
+      return;
+    }
+
     const newLoan = {
+      id: uuidv4(),
       name: loanName,
+      category, // ✅ Add category
       amount: parseFloat(loanAmount),
+      remaining: parseFloat(remainingBalance), // ✅ Store remaining balance
       interest: parseFloat(interestRate),
       emi: parseFloat(emi),
       duration: parseInt(duration),
     };
 
-    addLoan(newLoan); // ✅ Save Loan to Context + AsyncStorage
+    addLoan(newLoan);
     Alert.alert('Success', 'Loan added successfully!');
-    navigation.goBack(); // ✅ Navigate back to dashboard
+    navigation.navigate('Dashboard'); // ✅ Navigate to Dashboard
   };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Header />
-      <ScrollView contentContainerStyle={styles.formContainer}>
-        <Text style={[styles.title, { color: colors.text }]}>Add Loan</Text>
+      <Header title="Add Loan" showBackButton={true} />
 
-        {/* Loan Name */}
+      <ScrollView contentContainerStyle={styles.formContainer}>
         <TextInput
           style={[
             styles.input,
             {
-              borderColor: colors.borderLight,
+              borderColor: colors.border,
               backgroundColor: colors.surface,
               color: colors.text,
             },
           ]}
           placeholder="Loan Name"
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={colors.textLight}
           value={loanName}
           onChangeText={setLoanName}
         />
 
-        {/* Loan Amount */}
         <TextInput
           style={[
             styles.input,
             {
-              borderColor: colors.borderLight,
+              borderColor: colors.border,
               backgroundColor: colors.surface,
               color: colors.text,
             },
           ]}
           placeholder="Loan Amount"
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={colors.textLight}
           keyboardType="numeric"
           value={loanAmount}
           onChangeText={setLoanAmount}
         />
 
-        {/* Interest Rate */}
         <TextInput
           style={[
             styles.input,
             {
-              borderColor: colors.borderLight,
+              borderColor: colors.border,
+              backgroundColor: colors.surface,
+              color: colors.text,
+            },
+          ]}
+          placeholder="Remaining Balance"
+          placeholderTextColor={colors.textLight}
+          keyboardType="numeric"
+          value={remainingBalance}
+          onChangeText={setRemainingBalance}
+        />
+
+        <TextInput
+          style={[
+            styles.input,
+            {
+              borderColor: colors.border,
               backgroundColor: colors.surface,
               color: colors.text,
             },
           ]}
           placeholder="Interest Rate (%)"
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={colors.textLight}
           keyboardType="numeric"
           value={interestRate}
           onChangeText={setInterestRate}
         />
 
-        {/* EMI Amount */}
         <TextInput
           style={[
             styles.input,
             {
-              borderColor: colors.borderLight,
+              borderColor: colors.border,
               backgroundColor: colors.surface,
               color: colors.text,
             },
           ]}
           placeholder="EMI Amount"
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={colors.textLight}
           keyboardType="numeric"
           value={emi}
           onChangeText={setEmi}
         />
 
-        {/* Duration */}
         <TextInput
           style={[
             styles.input,
             {
-              borderColor: colors.borderLight,
+              borderColor: colors.border,
               backgroundColor: colors.surface,
               color: colors.text,
             },
           ]}
           placeholder="Duration (Months)"
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={colors.textLight}
           keyboardType="numeric"
           value={duration}
           onChangeText={setDuration}
         />
-
-        {/* Submit Button */}
+        <View
+          style={[
+            styles.pickerContainer,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}
+        >
+          <Picker
+            selectedValue={category}
+            onValueChange={itemValue => setCategory(itemValue)}
+            style={[styles.picker, { color: colors.text }]}
+            dropdownIconColor={colors.primary} // Ensures the dropdown icon matches the theme
+            mode="dropdown" // Forces dropdown mode (better for web)
+          >
+            <Picker.Item label="Select Loan Category" value="" />
+            {categories.map((cat, index) => (
+              <Picker.Item key={index} label={cat} value={cat} />
+            ))}
+          </Picker>
+        </View>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: colors.primary }]}
           onPress={handleSubmit}
         >
-          <Text style={[styles.buttonText, { color: colors.textAccent }]}>
+          <Text style={[styles.buttonText, { color: colors.surface }]}>
             Add Loan
           </Text>
         </TouchableOpacity>
       </ScrollView>
+      <LoanTable />
     </View>
   );
 };
@@ -166,6 +228,25 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
   },
+  pickerContainer: {
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    width: '100%',
+  },
+
+  picker: {
+    height: 50,
+    fontSize: 16,
+    width: '100%', // Ensures proper width
+    backgroundColor: 'transparent', // Prevents weird white dropdowns
+    borderRadius: 8,
+    textAlign: 'center',
+    textAlignVertical: 'center', // Fixes alignment
+  },
+
   button: {
     paddingVertical: 12,
     borderRadius: 8,
