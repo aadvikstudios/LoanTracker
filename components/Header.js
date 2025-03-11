@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,53 +11,54 @@ import {
 import { useTheme } from '../context/ThemeProvider';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useLoans } from '../context/LoanProvider';
 import avatar from '../assets/avatar.jpg';
 
+// Currency Options
 const currencies = [
   { label: 'USD ($)', value: 'USD', icon: 'attach-money' },
   { label: 'INR (₹)', value: 'INR', icon: 'currency-rupee' },
 ];
 
-const Header = ({ title, showBackButton = false }) => {
+const Header = ({ title }) => {
   const { isDarkMode, setIsDarkMode, colors } = useTheme();
+  const { currencySymbol, setCurrencySymbol } = useLoans();
   const navigation = useNavigation();
 
-  const [currency, setCurrency] = useState(currencies[0]); // Default USD
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    currencies.find(c => c.value === currencySymbol) || currencies[0]
+  );
   const [isCurrencyModalVisible, setCurrencyModalVisible] = useState(false);
 
-  const handleLogout = () => {
-    navigation.navigate('Login');
-  };
+  useEffect(() => {
+    setCurrencySymbol(selectedCurrency.value);
+  }, [selectedCurrency]);
 
   const handleCurrencySelect = selectedCurrency => {
-    setCurrency(selectedCurrency);
+    setSelectedCurrency(selectedCurrency);
     setCurrencyModalVisible(false);
   };
 
   return (
     <View style={[styles.header, { backgroundColor: colors.surface }]}>
-      {showBackButton ? (
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.iconContainer}
-        >
-          <MaterialIcons name="arrow-back" size={24} color={colors.text} />
-        </TouchableOpacity>
-      ) : (
+      {/* Profile Avatar (Clickable) */}
+      <TouchableOpacity style={styles.avatarContainer}>
         <Image source={avatar} style={styles.avatar} />
-      )}
+      </TouchableOpacity>
 
-      <Text style={[styles.appName, { color: colors.text }]}>{title}</Text>
+      {/* Centered Title */}
+      <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
 
-      <View style={styles.actionsContainer}>
+      {/* Right Icons Section */}
+      <View style={styles.iconContainer}>
         {/* Theme Toggle */}
         <TouchableOpacity
           onPress={() => setIsDarkMode(!isDarkMode)}
-          style={styles.iconContainer}
+          style={styles.iconButton}
         >
           <MaterialIcons
             name={isDarkMode ? 'dark-mode' : 'light-mode'}
-            size={24}
+            size={22}
             color={colors.text}
           />
         </TouchableOpacity>
@@ -65,18 +66,17 @@ const Header = ({ title, showBackButton = false }) => {
         {/* Currency Selector */}
         <TouchableOpacity
           onPress={() => setCurrencyModalVisible(true)}
-          style={styles.iconContainer}
+          style={styles.iconButton}
         >
-          <MaterialIcons name={currency.icon} size={24} color={colors.text} />
-        </TouchableOpacity>
-
-        {/* Logout Button */}
-        <TouchableOpacity onPress={handleLogout} style={styles.iconContainer}>
-          <MaterialIcons name="logout" size={24} color={colors.text} />
+          <MaterialIcons
+            name={selectedCurrency.icon}
+            size={22}
+            color={colors.text}
+          />
         </TouchableOpacity>
       </View>
 
-      {/* Currency Modal */}
+      {/* Currency Selection Modal */}
       <Modal
         visible={isCurrencyModalVisible}
         transparent
@@ -103,7 +103,7 @@ const Header = ({ title, showBackButton = false }) => {
                     size={24}
                     color={colors.text}
                   />
-                  <Text style={{ color: colors.text, marginLeft: 10 }}>
+                  <Text style={[styles.currencyText, { color: colors.text }]}>
                     {item.label}
                   </Text>
                 </TouchableOpacity>
@@ -127,26 +127,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: 12,
     paddingHorizontal: 15,
-    paddingVertical: 10,
-    elevation: 4,
+    elevation: 2,
   },
-  avatar: {
+  avatarContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
+    overflow: 'hidden',
   },
-  appName: {
+  avatar: {
+    width: '100%',
+    height: '100%',
+  },
+  title: {
     fontSize: 18,
     fontWeight: 'bold',
-    flex: 1,
     textAlign: 'center',
+    flex: 1,
   },
-  actionsContainer: {
+  iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  iconContainer: {
+  iconButton: {
     padding: 5,
     marginLeft: 10,
   },
@@ -157,23 +162,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    width: 250,
+    width: 280,
     padding: 20,
     borderRadius: 10,
+    alignItems: 'center',
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
-    textAlign: 'center',
+    marginBottom: 10,
   },
   currencyItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  currencyText: {
+    fontSize: 16,
+    marginLeft: 10,
   },
   closeButton: {
     marginTop: 20,
+    padding: 10,
     alignItems: 'center',
   },
 });

@@ -6,6 +6,8 @@ const LoanContext = createContext();
 
 export const LoanProvider = ({ children }) => {
   const [loans, setLoans] = useState([]);
+  const [currencySymbol, setCurrencySymbol] = useState('₹');
+  const [extraPayment, setExtraPayment] = useState('');
 
   // Select appropriate storage: AsyncStorage for mobile, localStorage for web
   const Storage = {
@@ -24,36 +26,40 @@ export const LoanProvider = ({ children }) => {
     },
   };
 
-  // Load Loans from Storage when the app starts
+  // Load Loans, Currency, and Extra Payment from Storage when the app starts
   useEffect(() => {
-    const loadLoans = async () => {
+    const loadData = async () => {
       try {
         const storedLoans = await Storage.getItem('loans');
-        if (storedLoans) {
-          setLoans(JSON.parse(storedLoans));
-        }
+        const storedCurrency = await Storage.getItem('currencySymbol');
+        const storedExtraPayment = await Storage.getItem('extraPayment');
+
+        if (storedLoans) setLoans(JSON.parse(storedLoans));
+        if (storedCurrency) setCurrencySymbol(storedCurrency);
+        if (storedExtraPayment) setExtraPayment(storedExtraPayment);
       } catch (error) {
-        console.error('Failed to load loans:', error);
+        console.error('Failed to load data:', error);
       }
     };
-
-    loadLoans();
+    loadData();
   }, []);
 
-  // Save Loans to Storage whenever the loans change
+  // Save Loans, Currency, and Extra Payment whenever they change
   useEffect(() => {
-    const saveLoans = async () => {
+    const saveData = async () => {
       try {
         await Storage.setItem('loans', JSON.stringify(loans));
+        await Storage.setItem('currencySymbol', currencySymbol);
+        await Storage.setItem('extraPayment', extraPayment);
       } catch (error) {
-        console.error('Failed to save loans:', error);
+        console.error('Failed to save data:', error);
       }
     };
 
-    if (loans.length > 0) {
-      saveLoans();
+    if (loans.length > 0 || currencySymbol || extraPayment) {
+      saveData();
     }
-  }, [loans]);
+  }, [loans, currencySymbol, extraPayment]);
 
   // Function to Generate a Unique ID (Timestamp-based)
   const generateUniqueId = () => {
@@ -81,6 +87,8 @@ export const LoanProvider = ({ children }) => {
       console.error('Failed to clear loans:', error);
     }
   };
+
+  // Function to Update Loan
   const updateLoan = updatedLoan => {
     setLoans(prevLoans =>
       prevLoans.map(loan => (loan.id === updatedLoan.id ? updatedLoan : loan))
@@ -89,7 +97,17 @@ export const LoanProvider = ({ children }) => {
 
   return (
     <LoanContext.Provider
-      value={{ loans, addLoan, removeLoan, clearLoans, updateLoan }}
+      value={{
+        loans,
+        addLoan,
+        removeLoan,
+        clearLoans,
+        updateLoan,
+        currencySymbol,
+        setCurrencySymbol,
+        extraPayment,
+        setExtraPayment,
+      }}
     >
       {children}
     </LoanContext.Provider>

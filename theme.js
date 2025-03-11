@@ -6,44 +6,45 @@ export const lightTheme = {
     ...MD3LightTheme.colors,
 
     // 🎨 Primary Colors
-    primary: '#6200ea', // Purple
-    primaryLight: '#9c47ff', // Light Purple
-    primaryDark: '#3700b3', // Dark Purple
+    primary: '#1E3A8A', // Deep Royal Blue
+    primaryLight: '#3355CC', // Lighter Blue
+    primaryDark: '#14244B', // Darker Royal Blue
 
-    // 🎨 Secondary Colors
-    secondary: '#03dac6', // Teal
-    secondaryLight: '#66fff9',
-    secondaryDark: '#00a896',
+    // 🎨 Accent Colors
+    accentGold: '#C9A227', // Rich Gold
+    accentEmerald: '#2E8B57', // Emerald Green
+    accentPlatinum: '#D4AF37', // Platinum Gold
 
     // 🌍 Background Colors
-    background: '#f5f5f5', // Light Background
-    backgroundLight: '#ffffff', // White
-    backgroundDark: '#e0e0e0', // Light Gray
+    background: '#FAF9F6', // Ivory White
+    backgroundLight: '#FFFFFF', // Pure White
+    backgroundDark: '#EAE0C8', // Soft Beige
 
     // 📦 Surface Colors (Cards, Modals, etc.)
-    surface: '#ffffff', // Card Background
-    surfaceDark: '#dcdcdc', // Darker card background
+    surface: '#FFFFFF', // Card Background
+    surfaceDark: '#E6DCC2', // Soft Gold-Beige for contrast
 
     // 🔤 Text Colors
-    text: '#333333', // Default Text
+    text: '#222222', // Rich Dark Gray (for readability)
     textLight: '#555555',
     textDark: '#111111',
+    textGold: '#C9A227', // Gold Text Highlight
 
     // ✅ Feedback Colors
-    success: '#4caf50', // Green
-    warning: '#ff9800', // Orange
-    error: '#d32f2f', // Red
+    success: '#28A745', // Emerald Green (Success)
+    warning: '#E8B923', // Gold-Tinted Yellow
+    error: '#D72638', // Bold Rich Red
 
     // 📏 Border Colors
-    border: '#d1d1d1',
-    borderDark: '#aaaaaa',
+    border: '#C9A227', // Gold Borders for elegance
+    borderDark: '#8D732D', // Deeper Gold
 
     // 🌑 Shadows
-    shadow: '#cccccc',
+    shadow: '#AAA9A9', // Subtle Luxury Shadow
 
     // 🎭 Disabled & Placeholder
-    disabled: '#cccccc',
-    placeholder: '#757575',
+    disabled: '#C7C7C7',
+    placeholder: '#777777',
   },
   fonts: {
     regular: {
@@ -56,7 +57,7 @@ export const lightTheme = {
     },
     bold: {
       fontFamily: 'Poppins_700Bold',
-      fontWeight: 'normal',
+      fontWeight: 'bold',
     },
   },
 };
@@ -67,44 +68,45 @@ export const darkTheme = {
     ...MD3DarkTheme.colors,
 
     // 🎨 Primary Colors
-    primary: '#bb86fc',
-    primaryLight: '#e3b3ff',
-    primaryDark: '#8854c0',
+    primary: '#102A43', // Deep Navy Blue
+    primaryLight: '#1F4A75', // Lighter Navy
+    primaryDark: '#081B31', // Almost Black-Blue
 
-    // 🎨 Secondary Colors
-    secondary: '#03dac6',
-    secondaryLight: '#66fff9',
-    secondaryDark: '#00a896',
+    // 🎨 Accent Colors
+    accentGold: '#F5C518', // Bright Gold for highlights
+    accentEmerald: '#28A745', // Emerald Green
+    accentPlatinum: '#C0C0C0', // Platinum Silver
 
     // 🌍 Background Colors
-    background: '#121212', // Dark Background
-    backgroundLight: '#1e1e1e',
-    backgroundDark: '#000000',
+    background: '#0D0D0D', // Deep Black
+    backgroundLight: '#1C1C1E', // Dark Mode Gray
+    backgroundDark: '#000000', // Pure Black
 
     // 📦 Surface Colors (Cards, Modals, etc.)
-    surface: '#1e1e1e',
-    surfaceDark: '#282828',
+    surface: '#1C1C1E', // Dark Gray for Cards
+    surfaceDark: '#2A2A2D', // Slightly Lighter Gray
 
     // 🔤 Text Colors
-    text: '#ffffff',
-    textLight: '#cccccc',
-    textDark: '#aaaaaa',
+    text: '#EDEDED', // Light text for contrast
+    textLight: '#BBBBBB',
+    textDark: '#FFFFFF',
+    textGold: '#F5C518', // Gold Text for premium feel
 
     // ✅ Feedback Colors
-    success: '#81c784',
-    warning: '#ffb74d',
-    error: '#e57373',
+    success: '#17A589', // Teal Green
+    warning: '#E67E22', // Orange-Gold
+    error: '#E74C3C', // Bright Red
 
     // 📏 Border Colors
-    border: '#444444',
-    borderDark: '#333333',
+    border: '#F5C518', // Gold Borders
+    borderDark: '#A67C00', // Deep Gold
 
     // 🌑 Shadows
-    shadow: '#111111',
+    shadow: '#2E2E2E', // Dark Shadows
 
     // 🎭 Disabled & Placeholder
-    disabled: '#666666',
-    placeholder: '#aaaaaa',
+    disabled: '#5A5A5A',
+    placeholder: '#8A8A8A',
   },
   fonts: {
     regular: {
@@ -117,7 +119,7 @@ export const darkTheme = {
     },
     bold: {
       fontFamily: 'Poppins_700Bold',
-      fontWeight: 'normal',
+      fontWeight: 'bold',
     },
   },
 };
